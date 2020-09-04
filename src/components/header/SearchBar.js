@@ -13,8 +13,8 @@ class SearchBar extends Component {
 	}
 
   handleSearchInput(event) {
-		const { target: { name } } = event;
-    this.setState({ searchInput: name });
+		const { target: { value } } = event;
+    this.setState({ searchInput: value });
   }
 
   render() {
@@ -26,8 +26,9 @@ class SearchBar extends Component {
           type="text"
           name="search"
           id="search"
+          value={searchInput}
           placeholder="Search"
-          onChange={this.handleSearchInput()}
+          onChange={(event) => this.handleSearchInput(event)}
         />
         <div className="search-btn">
           <Link

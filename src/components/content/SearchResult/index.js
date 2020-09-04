@@ -4,13 +4,14 @@ import { Link } from 'react-router-dom';
 
 import '../../../css/sideBar.css';
 import { searchVideos } from '../../../api/service';
+import videosMock from '../../../__mocks__/mockSearchVideo';
 
 class SearchResult extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      data: [],
+      data: videosMock.items,
       error: '',
     };
   }
@@ -20,9 +21,9 @@ class SearchResult extends Component {
       params: { searchParam },
     } = this.props.match;
 
-    searchVideos(searchParam).then((data) => {
+    /* searchVideos(searchParam).then((data) => {
       this.setState({ data: data.items });
-    }).catch(error => this.setState({error: error}))
+    }).catch(error => this.setState({error: error})) */
   }
 
   render() {
