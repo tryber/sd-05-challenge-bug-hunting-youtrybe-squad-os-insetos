@@ -32,10 +32,11 @@ class VideoPage extends Component {
     this.setState({ videoId: videoId })
     getVideoInfo(this.state.videoId)
       .then((data) => this.setState({ videoInfo: data.items[0] }));
-
+    console.log(this.props)
     getVideoComments(this.state.videoId)
       .then((data) => this.setState({ videoComments: data.items }));
-    this.props.history.push(`/watch/${videoId}`);
+      console.log(this.props.history)
+   this.props.history.push(`/watch/${videoId}`);
   }
 
   render() {

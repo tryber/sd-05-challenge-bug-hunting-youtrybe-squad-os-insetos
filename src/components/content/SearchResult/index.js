@@ -4,14 +4,13 @@ import { Link } from 'react-router-dom';
 
 import '../../../css/sideBar.css';
 import { searchVideos } from '../../../api/service';
-import videosMock from '../../../__mocks__/mockSearchVideo';
 
 class SearchResult extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      data: videosMock.items,
+      data: [],
       error: '',
     };
   }
@@ -21,9 +20,9 @@ class SearchResult extends Component {
       params: { searchParam },
     } = this.props.match;
 
-    /* searchVideos(searchParam).then((data) => {
+    searchVideos(searchParam).then((data) => {
       this.setState({ data: data.items });
-    }).catch(error => this.setState({error: error})) */
+    }).catch(error => this.setState({error: error}))
   }
 
   render() {
@@ -33,12 +32,13 @@ class SearchResult extends Component {
 
     return (
       <div>
-        {data.map((item) => (
+          {data.map((item) => {
+          return (!item.id.channelId &&
           <Link className="thumbnail-card" key={item.etag} to={{
             pathname: `/watch/${item.id.videoId}`,
             state: { data: data }
           }}><VideoCard video={item} /></Link>
-        ))}
+          )})}
       </div>
     );
   }

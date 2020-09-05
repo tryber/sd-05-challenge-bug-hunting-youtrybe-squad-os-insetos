@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { Router } from 'react-router-dom';
+import { Router, MemoryRouter } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import VideoPage from '../components/content/VideoPage/VideoPage';
 import mockSearchVideo from '../__mocks__/mockSearchVideo';
@@ -35,6 +35,21 @@ function renderWithRouter(ui, routeConfigs = {}) {
     history,
   };
 }
+/* function renderWithRouter(
+  ui,
+  {
+    route = '/',
+    history = createMemoryHistory({ initialEntries: [route] }),
+  } = {}
+) {
+  const Wrapper = ({ children }) => (
+    <Router history={history}>{children}</Router>
+  )
+  return {
+    ...render(ui, { wrapper: Wrapper }),
+    history,
+  }
+} */
 
 describe('Funcionalidades Componente Video Page', () => {
   it('Renderiza dados no vídeo na página', async () => {
@@ -59,13 +74,24 @@ describe('Funcionalidades Componente Video Page', () => {
 
   it('Vídeo selecionado atualiza os dados do vídeo atual na página', async () => {
     const randomVideoID = mockSearchVideo.items[1].id.videoId;
-    const { history } = renderWithRouter(
+  const { history } = render(<MemoryRouter><VideoPage
+    <Route
+    path="*"
+    render={({ history, location }) => {
+      history = history;
+      location = location;
+      return null;
+    }}
+  />
+  /></MemoryRouter>)
+   /*  const { history } = renderWithRouter(
       <VideoPage
         match={{ params: { videoId: randomVideoID } }}
         location={{ state: { data: mockSearchVideo.items } }}
+        history = {[{ location: { pathname: randomVideoID } }]}
       />,
       { route: `/watch/${randomVideoID}` }
-    );
+    ); */
 
     await waitFor(() => expect(api.getVideoInfo).toHaveBeenCalled());
     await waitFor(() => expect(api.getVideoComments).toHaveBeenCalled());
